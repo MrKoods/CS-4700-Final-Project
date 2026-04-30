@@ -30,7 +30,10 @@ namespace CS4700
         // Private state
         // ---------------------------------------------------------------------------
 
+        private const string IsTalkingParam = "IsTalking";
+
         private Transform      _playerTransform;
+        private Animator       _animator;
         private bool           _playerInRange;
         private bool           _isDialogueOpen;
 
@@ -46,6 +49,17 @@ namespace CS4700
                 _playerTransform = playerObj.transform;
             else
                 Debug.LogWarning("[InteractableNPC] No GameObject with tag 'Player' found.", this);
+
+            _animator = GetComponent<Animator>();
+
+            if (DialogueManager.Instance != null)
+                DialogueManager.Instance.OnDialogueClosed += OnDialogueClosed;
+        }
+
+        private void OnDestroy()
+        {
+            if (DialogueManager.Instance != null)
+                DialogueManager.Instance.OnDialogueClosed -= OnDialogueClosed;
         }
 
         private void Update()
@@ -88,7 +102,13 @@ namespace CS4700
             if (!DialogueManager.Instance.IsDialogueOpen)
             {
                 DialogueManager.Instance.OpenDialogue(DialogueLine);
+                _animator?.SetBool(IsTalkingParam, true);
             }
+        }
+
+        private void OnDialogueClosed()
+        {
+            _animator?.SetBool(IsTalkingParam, false);
         }
 
         private void DrawInteractionPrompt()
