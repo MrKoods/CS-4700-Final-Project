@@ -1,4 +1,4 @@
-# Unity generated folders
+# ========== Unity ==========
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
@@ -6,15 +6,11 @@
 [Bb]uilds/
 [Ll]ogs/
 UserSettings/
-
-# Memory captures
 MemoryCaptures/
 
-# Asset meta data (keep .meta files, but ignore others if needed)
-!*.meta
-
-# Visual Studio / VS Code
+# ========== IDE ==========
 .vs/
+.idea/
 *.csproj
 *.unityproj
 *.sln
@@ -26,9 +22,17 @@ MemoryCaptures/
 *.booproj
 *.svd
 
-# OS junk
+# ========== OS ==========
 .DS_Store
 Thumbs.db
 
-# Crash logs
+# ========== Build Files ==========
+*.apk
+*.aab
+*.exe
+
+# ========== Gradle ==========
+.gradle/
+
+# ========== Crash Logs ==========
 sysinfo.txt
