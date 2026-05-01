@@ -16,8 +16,8 @@ namespace CS4700
         // Constants
         // ---------------------------------------------------------------------------
 
-        private const float DefaultRunSpeed      = 4f;
-        private const float DefaultSprintSpeed   = 7f;
+        private const float DefaultRunSpeed      = 30f;
+        private const float DefaultSprintSpeed   = 37f;
         private const float DefaultRotationSpeed = 720f;
         private const float DefaultGravity       = -18f;
         private const float DefaultJumpHeight    = 1.4f;
