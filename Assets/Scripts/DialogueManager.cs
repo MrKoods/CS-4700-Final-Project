@@ -2,52 +2,25 @@ using UnityEngine;
 
 namespace CS4700
 {
-    /// <summary>
-    /// Singleton that manages the dialogue UI using immediate-mode GUI (OnGUI).
-    /// Call <see cref="OpenDialogue"/> to display a message; the player dismisses
-    /// it with E or Space.
-    /// </summary>
     public class DialogueManager : MonoBehaviour
     {
-        // ---------------------------------------------------------------------------
-        // Singleton
-        // ---------------------------------------------------------------------------
-
-        /// <summary>Global access point for the DialogueManager instance.</summary>
         public static DialogueManager Instance { get; private set; }
 
-        // ---------------------------------------------------------------------------
-        // Constants
-        // ---------------------------------------------------------------------------
+        private const float DialogueBoxWidth = 500f;
+        private const float DialogueBoxHeight = 140f;
 
-        private const float DialogueBoxWidth  = 500f;
-        private const float DialogueBoxHeight = 120f;
-        private const int   DialogueFontSize  = 18;
-        private const int   HintFontSize      = 13;
+        private string _currentText = "";
+        private string _speakerName = "";
 
-        // ---------------------------------------------------------------------------
-        // State
-        // ---------------------------------------------------------------------------
+        private bool _isDialogueOpen;
+        public bool IsDialogueOpen => _isDialogueOpen;
 
-        private string _currentText = string.Empty;
-        private string _speakerName = string.Empty;
+        // NEW: choices
+        private string[] _choices;
+        private System.Action<int> _onChoiceSelected;
+        private bool _showingChoices;
 
-        /// <summary>True while a dialogue box is currently visible.</summary>
-        public bool IsDialogueOpen { get; private set; }
-
-        // ---------------------------------------------------------------------------
-        // Events
-        // ---------------------------------------------------------------------------
-
-        /// <summary>Raised when dialogue opens. Parameter is the displayed text.</summary>
-        public event System.Action<string> OnDialogueOpened;
-
-        /// <summary>Raised when dialogue closes.</summary>
         public event System.Action OnDialogueClosed;
-
-        // ---------------------------------------------------------------------------
-        // Unity lifecycle
-        // ---------------------------------------------------------------------------
 
         private void Awake()
         {
@@ -61,99 +34,135 @@ namespace CS4700
 
         private void Update()
         {
-            if (!IsDialogueOpen)
-                return;
+            if (!_isDialogueOpen) return;
 
-            if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Space))
+            // CHOICE INPUT
+            if (_showingChoices)
             {
-                CloseDialogue();
+                for (int i = 0; i < _choices.Length; i++)
+                {
+                    if (Input.GetKeyDown(KeyCode.Alpha1 + i))
+                    {
+                        SelectChoice(i);
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Space))
+                {
+                    CloseDialogue();
+                }
             }
         }
 
         private void OnGUI()
         {
-            if (!IsDialogueOpen)
-                return;
+            if (!_isDialogueOpen) return;
 
-            DrawDialogueBox();
+            float x = (Screen.width - DialogueBoxWidth) / 2;
+            float y = Screen.height - DialogueBoxHeight - 40;
+
+            GUI.Box(new Rect(x, y, DialogueBoxWidth, DialogueBoxHeight), "");
+
+            // NAME
+            if (!string.IsNullOrEmpty(_speakerName))
+            {
+                GUIStyle nameStyle = new GUIStyle(GUI.skin.label)
+                {
+                    fontStyle = FontStyle.Bold,
+                    fontSize = 18
+                };
+
+                GUI.Label(new Rect(x + 10, y + 5, 400, 25), _speakerName, nameStyle);
+            }
+
+            // TEXT
+            GUIStyle textStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 16,
+                wordWrap = true
+            };
+
+            float textY = string.IsNullOrEmpty(_speakerName) ? y + 15 : y + 30;
+
+            GUI.Label(new Rect(x + 10, textY, DialogueBoxWidth - 20, 50), _currentText, textStyle);
+
+            // CHOICES
+            if (_showingChoices && _choices != null)
+            {
+                for (int i = 0; i < _choices.Length; i++)
+                {
+                    GUI.Label(
+                        new Rect(x + 20, y + 80 + (i * 20), 400, 20),
+                        $"{i + 1}. {_choices[i]}"
+                    );
+                }
+            }
+            else
+            {
+                GUI.Label(new Rect(x + 10, y + DialogueBoxHeight - 25, 200, 20), "[E / Space]");
+            }
         }
 
-        // ---------------------------------------------------------------------------
-        // Public API
-        // ---------------------------------------------------------------------------
-
-        /// <summary>Opens the dialogue box and displays the given text.</summary>
-        public void OpenDialogue(string text, string speakerName = "")
+        // =========================================
+        // NORMAL DIALOGUE
+        // =========================================
+        public void OpenDialogue(string text, string speaker = "")
         {
-            _currentText   = text;
-            _speakerName   = speakerName;
-            IsDialogueOpen = true;
+            _currentText = text;
+            _speakerName = speaker;
+
+            _showingChoices = false;
+            _isDialogueOpen = true;
 
             SetPlayerMovement(false);
-            OnDialogueOpened?.Invoke(text);
         }
 
-        /// <summary>Closes the dialogue box and re-enables player movement.</summary>
-        public void CloseDialogue()
+        // =========================================
+        // CHOICES
+        // =========================================
+        public void OpenChoices(string text, string speaker, string[] choices, System.Action<int> callback)
         {
-            IsDialogueOpen = false;
-            _currentText   = string.Empty;
-            _speakerName   = string.Empty;
+            _currentText = text;
+            _speakerName = speaker;
+
+            _choices = choices;
+            _onChoiceSelected = callback;
+            _showingChoices = true;
+
+            _isDialogueOpen = true;
+
+            SetPlayerMovement(false);
+        }
+
+        private void SelectChoice(int index)
+        {
+            _showingChoices = false;
+            _isDialogueOpen = false;
 
             SetPlayerMovement(true);
-            OnDialogueClosed?.Invoke();
+
+            _onChoiceSelected?.Invoke(index);
         }
 
-        // ---------------------------------------------------------------------------
-        // Private helpers
-        // ---------------------------------------------------------------------------
+        public void CloseDialogue()
+        {
+            _isDialogueOpen = false;
+            _currentText = "";
+            _speakerName = "";
+
+            SetPlayerMovement(true);
+
+            OnDialogueClosed?.Invoke();
+        }
 
         private void SetPlayerMovement(bool enabled)
         {
             ThirdPersonPlayerController player = FindFirstObjectByType<ThirdPersonPlayerController>();
             if (player != null)
                 player.SetMovementEnabled(enabled);
-        }
-
-        private void DrawDialogueBox()
-        {
-            float x = (Screen.width  - DialogueBoxWidth)  * 0.5f;
-            float y =  Screen.height - DialogueBoxHeight  - 40f;
-
-            // Background box.
-            GUI.Box(new Rect(x, y, DialogueBoxWidth, DialogueBoxHeight), string.Empty);
-
-            // Speaker name (if provided).
-            if (!string.IsNullOrEmpty(_speakerName))
-            {
-                GUIStyle nameStyle = new GUIStyle(GUI.skin.label)
-                {
-                    fontStyle = FontStyle.Bold,
-                    fontSize  = DialogueFontSize
-                };
-                GUI.Label(new Rect(x + 16f, y + 8f, DialogueBoxWidth - 32f, 24f), _speakerName, nameStyle);
-            }
-
-            // Dialogue text.
-            GUIStyle textStyle = new GUIStyle(GUI.skin.label)
-            {
-                fontSize = DialogueFontSize,
-                wordWrap = true
-            };
-            float textY = string.IsNullOrEmpty(_speakerName) ? y + 16f : y + 36f;
-            GUI.Label(new Rect(x + 16f, textY, DialogueBoxWidth - 32f, 60f), _currentText, textStyle);
-
-            // Dismiss hint.
-            GUIStyle hintStyle = new GUIStyle(GUI.skin.label)
-            {
-                fontSize  = HintFontSize,
-                alignment = TextAnchor.LowerRight,
-                fontStyle = FontStyle.Italic
-            };
-            GUI.Label(
-                new Rect(x + 16f, y + DialogueBoxHeight - 26f, DialogueBoxWidth - 32f, 22f),
-                "[E / Space] Close",
-                hintStyle);
         }
     }
 }

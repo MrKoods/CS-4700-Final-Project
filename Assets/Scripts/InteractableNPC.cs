@@ -2,135 +2,76 @@ using UnityEngine;
 
 namespace CS4700
 {
-    /// <summary>
-    /// Attach to any NPC to make it interactable. When the player enters the
-    /// interaction radius, a "Press E to Talk" prompt appears. Pressing E opens
-    /// a dialogue via <see cref="DialogueManager"/>.
-    /// </summary>
     public class InteractableNPC : MonoBehaviour
     {
-        // ---------------------------------------------------------------------------
-        // Constants
-        // ---------------------------------------------------------------------------
-
         private const float DefaultInteractionRadius = 3f;
-        private const string DefaultDialogueLine     = "Hello.";
 
-        // ---------------------------------------------------------------------------
-        // Public fields
-        // ---------------------------------------------------------------------------
-
-        /// <summary>Distance within which the player can interact with this NPC.</summary>
         public float InteractionRadius = DefaultInteractionRadius;
 
-        /// <summary>The dialogue line this NPC speaks when interacted with.</summary>
-        public string DialogueLine = DefaultDialogueLine;
+        [Header("Dialogue")]
+        public string DialogueLine = "Hello.";
 
-        // ---------------------------------------------------------------------------
-        // Private state
-        // ---------------------------------------------------------------------------
+        // OPTIONAL override (leave empty to use GameObject name)
+        public string OverrideName = "";
 
-        private const string IsTalkingParam = "IsTalking";
+        private Transform _playerTransform;
+        private bool _playerInRange;
 
-        private Transform      _playerTransform;
-        private Animator       _animator;
-        private bool           _playerInRange;
-        private bool           _isDialogueOpen;
+        private string NPCName
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(OverrideName))
+                    return OverrideName;
 
-        // ---------------------------------------------------------------------------
-        // Unity lifecycle
-        // ---------------------------------------------------------------------------
+                return gameObject.name; // 🔥 AUTO USE OBJECT NAME
+            }
+        }
 
         private void Start()
         {
-            // Find the player by tag for decoupled lookup.
-            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-            if (playerObj != null)
-                _playerTransform = playerObj.transform;
-            else
-                Debug.LogWarning("[InteractableNPC] No GameObject with tag 'Player' found.", this);
-
-            _animator = GetComponent<Animator>();
-
-            if (DialogueManager.Instance != null)
-                DialogueManager.Instance.OnDialogueClosed += OnDialogueClosed;
-        }
-
-        private void OnDestroy()
-        {
-            if (DialogueManager.Instance != null)
-                DialogueManager.Instance.OnDialogueClosed -= OnDialogueClosed;
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+                _playerTransform = player.transform;
         }
 
         private void Update()
         {
-            if (_playerTransform == null)
-                return;
+            if (_playerTransform == null) return;
 
-            float distance = Vector3.Distance(transform.position, _playerTransform.position);
-            _playerInRange = distance <= InteractionRadius;
+            float dist = Vector3.Distance(transform.position, _playerTransform.position);
+            _playerInRange = dist <= InteractionRadius;
 
             if (_playerInRange && Input.GetKeyDown(KeyCode.E))
             {
-                HandleInteraction();
+                Interact();
             }
+        }
+
+        private void Interact()
+        {
+            // 🔥 MAIN STORY TRIGGER
+            if (NPCName == "Caleb")
+            {
+                NarrativeController.Instance.StartOverlookScene();
+                return;
+            }
+
+            DialogueManager.Instance.OpenDialogue(DialogueLine, NPCName);
         }
 
         private void OnGUI()
         {
-            // Only show the prompt when in range and dialogue is not already open.
-            if (!_playerInRange)
-                return;
-            if (DialogueManager.Instance != null && DialogueManager.Instance.IsDialogueOpen)
-                return;
+            if (!_playerInRange) return;
+            if (DialogueManager.Instance != null && DialogueManager.Instance.IsDialogueOpen) return;
 
-            DrawInteractionPrompt();
-        }
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position + Vector3.up * 2f);
+            if (screenPos.z < 0) return;
 
-        // ---------------------------------------------------------------------------
-        // Private helpers
-        // ---------------------------------------------------------------------------
+            float x = screenPos.x - 80;
+            float y = Screen.height - screenPos.y - 15;
 
-        private void HandleInteraction()
-        {
-            if (DialogueManager.Instance == null)
-            {
-                Debug.LogError("[InteractableNPC] DialogueManager not found in scene.", this);
-                return;
-            }
-
-            if (!DialogueManager.Instance.IsDialogueOpen)
-            {
-                DialogueManager.Instance.OpenDialogue(DialogueLine);
-                _animator?.SetBool(IsTalkingParam, true);
-            }
-        }
-
-        private void OnDialogueClosed()
-        {
-            _animator?.SetBool(IsTalkingParam, false);
-        }
-
-        private void DrawInteractionPrompt()
-        {
-            // Convert NPC world position to screen position for label placement.
-            Vector3 screenPos = Camera.main != null
-                ? Camera.main.WorldToScreenPoint(transform.position + Vector3.up * 2.2f)
-                : Vector3.zero;
-
-            if (screenPos.z < 0f)
-                return;
-
-            float x = screenPos.x - 80f;
-            float y = Screen.height - screenPos.y - 15f;
-
-            GUIStyle style = new GUIStyle(GUI.skin.box)
-            {
-                alignment = TextAnchor.MiddleCenter,
-                fontSize  = 14
-            };
-
-            GUI.Box(new Rect(x, y, 160f, 30f), "Press E to Talk", style);
+            GUI.Box(new Rect(x, y, 160, 30), $"[E] Talk: {NPCName}");
         }
     }
 }
