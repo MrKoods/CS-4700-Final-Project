@@ -6259,9 +6259,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f281e9d96d705ca4c850fa33e6754454, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CS4700.InteractableNPC
-  InteractionRadius: 3
-  DialogueLine: Hello.
-  OverrideName: 
 --- !u!114 &1084152457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8010,9 +8007,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f281e9d96d705ca4c850fa33e6754454, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CS4700.InteractableNPC
-  InteractionRadius: 3
-  DialogueLine: Hello.
-  OverrideName: 
 --- !u!114 &1317649370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8690,9 +8684,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f281e9d96d705ca4c850fa33e6754454, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CS4700.InteractableNPC
-  InteractionRadius: 3
-  DialogueLine: Hello.
-  OverrideName: 
 --- !u!114 &1401012955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9558,9 +9549,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f281e9d96d705ca4c850fa33e6754454, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CS4700.InteractableNPC
-  InteractionRadius: 3
-  DialogueLine: Hello.
-  OverrideName: 
 --- !u!114 &1517346778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11086,9 +11074,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f281e9d96d705ca4c850fa33e6754454, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CS4700.InteractableNPC
-  InteractionRadius: 3
-  DialogueLine: Hello.
-  OverrideName: 
 --- !u!114 &1767539240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13199,9 +13184,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f281e9d96d705ca4c850fa33e6754454, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CS4700.InteractableNPC
-  InteractionRadius: 3
-  DialogueLine: Hello.
-  OverrideName: 
 --- !u!114 &2091348143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13400,9 +13382,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f281e9d96d705ca4c850fa33e6754454, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CS4700.InteractableNPC
-  InteractionRadius: 3
-  DialogueLine: Hello.
-  OverrideName: 
 --- !u!114 &2112359209
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -82,8 +82,8 @@ namespace CS4700
             ApplyGravity();
 
             // Pause movement while dialogue is active.
-            if (DialogueManager.Instance != null && DialogueManager.Instance.IsDialogueOpen)
-                return;
+// if (DialogueManager.Instance != null && DialogueManager.Instance.IsDialogueOpen)
+//     return;
 
             if (_waiting)
             {
