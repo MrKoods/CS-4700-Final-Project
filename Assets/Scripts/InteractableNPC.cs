@@ -19,7 +19,10 @@ namespace CS4700
         private void Start()
         {
             GameObject p = GameObject.FindGameObjectWithTag("Player");
-            if (p != null) _player = p.transform;
+            if (p != null)
+                _player = p.transform;
+            else
+                Debug.LogWarning($"[InteractableNPC] No Player found in scene.", this);
 
             _animator = GetComponent<Animator>();
             _wander = GetComponent<NPCWander>();
@@ -27,6 +30,8 @@ namespace CS4700
 
             if (DialogueManager.Instance != null)
                 DialogueManager.Instance.OnDialogueClosed += OnDialogueClosed;
+            else
+                Debug.LogWarning("[InteractableNPC] DialogueManager.Instance is NULL at Start().");
         }
 
         private void OnDestroy()
@@ -50,18 +55,41 @@ namespace CS4700
 
         private void Talk()
         {
+            // SAFETY CHECKS
+            if (DialogueManager.Instance == null)
+            {
+                Debug.LogError("[InteractableNPC] DialogueManager.Instance is NULL. Cannot talk.");
+                return;
+            }
+
+            if (ChronicleOfEchoes.Instance == null)
+            {
+                Debug.LogError("[InteractableNPC] ChronicleOfEchoes.Instance is NULL. Cannot talk.");
+                return;
+            }
+
             StopMovement();
 
             var c = ChronicleOfEchoes.Instance;
 
-            // CALEB → MAIN SCENE
+            // ============================
+            // CALEB → triggers Overlook scene
+            // ============================
             if (NPCName == "Caleb")
             {
+                if (NarrativeController.Instance == null)
+                {
+                    Debug.LogError("[InteractableNPC] NarrativeController.Instance is NULL.");
+                    return;
+                }
+
                 NarrativeController.Instance.StartOverlookScene();
                 return;
             }
 
+            // ============================
             // ABIGAIL
+            // ============================
             if (NPCName == "Abigail")
             {
                 if (!c.KnowsAbigailBlackmail)
@@ -89,14 +117,18 @@ namespace CS4700
                 return;
             }
 
+            // ============================
             // WEAVER (OldManNarrator)
+            // ============================
             if (NPCName == "OldManNarrator")
             {
-                DialogueManager.Instance.OpenDialogue(GetWeaverHint(), "Weaver");
+                DialogueManager.Instance.OpenDialogue(GetWeaverHintSafe(), "Weaver");
                 return;
             }
 
+            // ============================
             // FEMALE VILLAGER
+            // ============================
             if (NPCName == "FemaleVillager")
             {
                 if (!c.HasLedger)
@@ -117,7 +149,9 @@ namespace CS4700
                 return;
             }
 
+            // ============================
             // MALE VILLAGER
+            // ============================
             if (NPCName == "MaleVillager")
             {
                 if (!c.KnowsAbigailBlackmail)
@@ -137,17 +171,10 @@ namespace CS4700
                 return;
             }
 
+            // ============================
             // GENERIC NPCS
-            if (NPCName == "MaleMedievalNPC" || NPCName == "FemaleMedievalNPC")
-            {
-                DialogueManager.Instance.OpenDialogue(
-                    "The town is cursed... I can feel it.",
-                    "Villager"
-                );
-                return;
-            }
-
-            DialogueManager.Instance.OpenDialogue("...", NPCName);
+            // ============================
+            DialogueManager.Instance.OpenDialogue("The town is uneasy...", NPCName);
         }
 
         private void StopMovement()
@@ -155,7 +182,8 @@ namespace CS4700
             if (_wander != null) _wander.enabled = false;
             if (_patrol != null) _patrol.enabled = false;
 
-            _animator?.SetBool(IsTalkingParam, true);
+            if (_animator != null)
+                _animator.SetBool(IsTalkingParam, true);
         }
 
         private void ResumeMovement()
@@ -163,7 +191,8 @@ namespace CS4700
             if (_wander != null) _wander.enabled = true;
             if (_patrol != null) _patrol.enabled = true;
 
-            _animator?.SetBool(IsTalkingParam, false);
+            if (_animator != null)
+                _animator.SetBool(IsTalkingParam, false);
         }
 
         private void OnDialogueClosed()
@@ -171,9 +200,12 @@ namespace CS4700
             ResumeMovement();
         }
 
-        private string GetWeaverHint()
+        // SAFE VERSION OF WEAVER HINT
+        private string GetWeaverHintSafe()
         {
             var c = ChronicleOfEchoes.Instance;
+            if (c == null)
+                return "The threads are missing... something is wrong.";
 
             if (!c.KnowsAbigailBlackmail)
                 return "The child bends in the wind.";
@@ -190,7 +222,7 @@ namespace CS4700
         private void OnGUI()
         {
             if (!_inRange) return;
-            if (DialogueManager.Instance.IsDialogueOpen) return;
+            if (DialogueManager.Instance != null && DialogueManager.Instance.IsDialogueOpen) return;
 
             Vector3 screen = Camera.main.WorldToScreenPoint(transform.position + Vector3.up * 2f);
             if (screen.z < 0) return;
