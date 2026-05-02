@@ -1,272 +1,126 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace CS4700
 {
     public class NarrativeController : MonoBehaviour
     {
-        public static NarrativeController Instance;
-
-        private DialogueManager D;
-
-        // ============================
-        // NEW NARRATIVE SYSTEM
-        // ============================
-        public int currentLoop = 1;
-        public string currentStoryBeat = "Day1_Start";
-
-        public ChronicleOfEchoes knowledge;
-
-        private Dictionary<string, List<DialogueRule>> npcDialogueRules;
+        public static NarrativeController Instance { get; private set; }
 
         private void Awake()
         {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
             Instance = this;
         }
 
-        private void Start()
-        {
-            D = DialogueManager.Instance;
-
-            if (knowledge == null)
-                knowledge = ChronicleOfEchoes.Instance;
-
-            BuildDialogueRules();
-        }
-
-        // ============================
-        // NPCs call this to get correct dialogue
-        // ============================
         public DialogueLine GetDialogueForNPC(string npcName)
         {
-            if (!npcDialogueRules.ContainsKey(npcName))
-                return new DialogueLine("I have nothing to say right now.");
-
-            foreach (DialogueRule rule in npcDialogueRules[npcName])
+            switch (npcName)
             {
-                if (rule.ConditionMet(knowledge))
-                    return rule.line;
-            }
+                case "Abigail":
+                    return GetAbigailLine();
 
-            return new DialogueLine("…");
-        }
+                case "Weaver":
+                    return GetWeaverLine();
 
-        // ============================
-        // Build narrative logic
-        // ============================
-        private void BuildDialogueRules()
-        {
-            npcDialogueRules = new Dictionary<string, List<DialogueRule>>();
+                case "FemaleVillager":
+                    return GetFemaleVillagerLine();
 
-            // CALEB
-            npcDialogueRules["Caleb"] = new List<DialogueRule>()
-            {
-                new DialogueRule(
-                    k => !k.Has("Knows_Caleb_Grief"),
-                    new DialogueLine("I don't want to talk about it.")
-                ),
-
-                new DialogueRule(
-                    k => k.Has("Knows_Caleb_Grief") && !k.Has("Knows_Danforth_Manipulation"),
-                    new DialogueLine("I miss her… I can't move on.")
-                ),
-
-                new DialogueRule(
-                    k => k.Has("Knows_Danforth_Manipulation"),
-                    new DialogueLine("Danforth… he used us. All of us.")
-                )
-            };
-
-            // ABIGAIL
-            npcDialogueRules["Abigail"] = new List<DialogueRule>()
-            {
-                new DialogueRule(
-                    k => !k.Has("Knows_Abigail_Lying"),
-                    new DialogueLine("I saw the devil… I swear it.")
-                ),
-
-                new DialogueRule(
-                    k => k.Has("Knows_Abigail_Lying"),
-                    new DialogueLine("Please… don’t tell anyone what I told you.")
-                )
-            };
-
-            // WEAVER
-            npcDialogueRules["Weaver"] = new List<DialogueRule>()
-            {
-                new DialogueRule(
-                    k => true,
-                    new DialogueLine("Truth bends, but it does not break. Follow the threads.")
-                )
-            };
-        }
-
-        // ============================
-        // LOOP / DAY CONTROL
-        // ============================
-        public void StartDayOne()
-        {
-            currentLoop = 1;
-            currentStoryBeat = "Day1_Start";
-        }
-
-        public void ResetLoop()
-        {
-            currentLoop++;
-            currentStoryBeat = "Day1_Start";
-        }
-
-        // ============================
-        // YOUR ORIGINAL OVERLOOK SCENE
-        // ============================
-        public void StartOverlookScene()
-        {
-            StartCoroutine(RunScene());
-        }
-
-        IEnumerator RunScene()
-        {
-            yield return new WaitForSeconds(0.5f);
-
-            if (ChronicleOfEchoes.Instance.HasLedger &&
-                ChronicleOfEchoes.Instance.HasLocket &&
-                ChronicleOfEchoes.Instance.KnowsCalebTargeted)
-            {
-                yield return FinalLoop();
-            }
-            else if (ChronicleOfEchoes.Instance.KnowsAbigailBlackmail)
-            {
-                yield return MidLoop();
-            }
-            else
-            {
-                yield return Loop1();
+                default:
+                    return new DialogueLine("…", npcName);
             }
         }
 
-        // LOOP 1
-        IEnumerator Loop1()
+        // ---------------- ABIGAIL ----------------
+
+        private DialogueLine GetAbigailLine()
         {
-            D.OpenDialogue("The traveler has no shadow! Abigail, speak!", "Caleb");
-            yield return Wait();
+            var coe = ChronicleOfEchoes.Instance;
 
-            D.OpenDialogue("He... he came to me in the night...", "Abigail");
-            yield return Wait();
-
-            D.OpenChoices(
-                "What do you say?",
-                "Silas",
-                new string[]
+            // She is still hiding the truth, no confession yet
+            if (!coe.Has("Knows_Abigail_Lying"))
+            {
+                // If player already knows about blackmail, push her to confess
+                if (coe.Has("Knows_Abigail_Blackmail"))
                 {
-                    "That's a lie!",
-                    "Abigail, why are you doing this?",
-                    "Stay silent"
-                },
-                OnLoop1Choice
+                    // This is the confession moment – triggers knowledge
+                    return new DialogueLine(
+                        "Fine… I lied. I didn’t see Caleb that night. I was scared. I didn’t know what else to say.",
+                        "Abigail",
+                        true // triggersKnowledge -> Knows_Abigail_Lying via KnowledgeTrigger on Abigail
+                    );
+                }
+
+                // Early loop – she’s evasive
+                return new DialogueLine(
+                    "I told you what I saw. Caleb was there. Isn’t that enough?",
+                    "Abigail"
+                );
+            }
+
+            // After confession
+            return new DialogueLine(
+                "I never wanted this. I just wanted it all to stop.",
+                "Abigail"
             );
         }
 
-        void OnLoop1Choice(int choice)
+        // ---------------- WEAVER ----------------
+
+        private DialogueLine GetWeaverLine()
         {
-            if (choice == 2)
-                D.OpenDialogue("See how he hides behind silence?", "Caleb");
-            else
-                D.OpenDialogue("Silence, wretch!", "Caleb");
+            var coe = ChronicleOfEchoes.Instance;
 
-            StartCoroutine(Fail());
-        }
+            // Has the locket and hasn't heard Weaver's grief yet
+            if (coe.Has("HasLocket") && !coe.Has("Knows_Caleb_Grief"))
+            {
+                return new DialogueLine(
+                    "Caleb… he wasn’t himself. He carried a weight I couldn’t lift. I should’ve done more.",
+                    "Weaver",
+                    true // triggersKnowledge -> Knows_Caleb_Grief via KnowledgeTrigger on Weaver
+                );
+            }
 
-        // MID LOOP
-        IEnumerator MidLoop()
-        {
-            D.OpenDialogue("Abigail, speak!", "Caleb");
-            yield return Wait();
+            // After grief reveal
+            if (coe.Has("Knows_Caleb_Grief"))
+            {
+                return new DialogueLine(
+                    "Grief twists the truth. Be careful what you think you know.",
+                    "Weaver"
+                );
+            }
 
-            D.OpenChoices(
-                "You know more now...",
-                "Silas",
-                new string[]
-                {
-                    "Caleb, she’s being forced!",
-                    "Danforth is threatening her family!",
-                    "Abigail, you don’t have to do this!"
-                },
-                OnMidChoice
+            // Default Weaver line
+            return new DialogueLine(
+                "Threads fray where the town refuses to look.",
+                "Weaver"
             );
         }
 
-        void OnMidChoice(int choice)
+        // ---------------- FEMALE VILLAGER ----------------
+
+        private DialogueLine GetFemaleVillagerLine()
         {
-            D.OpenDialogue("You twist truth like a serpent.", "Caleb");
-            StartCoroutine(Fail());
-        }
+            var coe = ChronicleOfEchoes.Instance;
 
-        // FINAL LOOP
-        IEnumerator FinalLoop()
-        {
-            D.OpenDialogue("Caleb... look at this ledger.", "Silas");
-            yield return Wait();
+            // She reveals Caleb was being targeted
+            if (!coe.Has("Knows_Caleb_Targeted"))
+            {
+                return new DialogueLine(
+                    "Someone was watching Caleb. Following him. He told me he felt hunted.",
+                    "Villager",
+                    true // triggersKnowledge -> Knows_Caleb_Targeted via KnowledgeTrigger on this NPC
+                );
+            }
 
-            D.OpenDialogue("This is the Clerk’s seal...", "Caleb");
-            yield return Wait();
-
-            D.OpenDialogue("He planned your downfall.", "Silas");
-            yield return Wait();
-
-            D.OpenDialogue("And this locket—he stole it.", "Silas");
-            yield return Wait();
-
-            D.OpenDialogue("It was him! Danforth made me!", "Abigail");
-            yield return Wait();
-
-            D.OpenDialogue("Fetch him.", "Caleb");
-            yield return Wait();
-
-            D.OpenDialogue("The loop is broken.", "Weaver");
-        }
-
-        // FAIL
-        IEnumerator Fail()
-        {
-            yield return Wait();
-
-            D.OpenDialogue("You failed again.", "Weaver");
-            yield return Wait();
-
-            ChronicleOfEchoes.Instance.ResetLoop();
-            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
-        }
-
-        IEnumerator Wait()
-        {
-            while (DialogueManager.Instance.IsDialogueOpen)
-                yield return null;
-        }
-    }
-
-    // ============================
-    // SUPPORTING CLASSES
-    // ============================
-    public class DialogueRule
-    {
-        public System.Func<ChronicleOfEchoes, bool> ConditionMet;
-        public DialogueLine line;
-
-        public DialogueRule(System.Func<ChronicleOfEchoes, bool> condition, DialogueLine line)
-        {
-            ConditionMet = condition;
-            this.line = line;
-        }
-    }
-
-    public class DialogueLine
-    {
-        public string text;
-
-        public DialogueLine(string t)
-        {
-            text = t;
+            // After reveal
+            return new DialogueLine(
+                "I still see him in the square sometimes… in my mind.",
+                "Villager"
+            );
         }
     }
 }
