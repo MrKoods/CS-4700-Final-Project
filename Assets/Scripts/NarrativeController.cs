@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace CS4700
 {
@@ -9,6 +10,16 @@ namespace CS4700
 
         private DialogueManager D;
 
+        // ============================
+        // NEW NARRATIVE SYSTEM
+        // ============================
+        public int currentLoop = 1;
+        public string currentStoryBeat = "Day1_Start";
+
+        public ChronicleOfEchoes knowledge;
+
+        private Dictionary<string, List<DialogueRule>> npcDialogueRules;
+
         private void Awake()
         {
             Instance = this;
@@ -17,8 +28,98 @@ namespace CS4700
         private void Start()
         {
             D = DialogueManager.Instance;
+
+            if (knowledge == null)
+                knowledge = ChronicleOfEchoes.Instance;
+
+            BuildDialogueRules();
         }
 
+        // ============================
+        // NPCs call this to get correct dialogue
+        // ============================
+        public DialogueLine GetDialogueForNPC(string npcName)
+        {
+            if (!npcDialogueRules.ContainsKey(npcName))
+                return new DialogueLine("I have nothing to say right now.");
+
+            foreach (DialogueRule rule in npcDialogueRules[npcName])
+            {
+                if (rule.ConditionMet(knowledge))
+                    return rule.line;
+            }
+
+            return new DialogueLine("…");
+        }
+
+        // ============================
+        // Build narrative logic
+        // ============================
+        private void BuildDialogueRules()
+        {
+            npcDialogueRules = new Dictionary<string, List<DialogueRule>>();
+
+            // CALEB
+            npcDialogueRules["Caleb"] = new List<DialogueRule>()
+            {
+                new DialogueRule(
+                    k => !k.Has("Knows_Caleb_Grief"),
+                    new DialogueLine("I don't want to talk about it.")
+                ),
+
+                new DialogueRule(
+                    k => k.Has("Knows_Caleb_Grief") && !k.Has("Knows_Danforth_Manipulation"),
+                    new DialogueLine("I miss her… I can't move on.")
+                ),
+
+                new DialogueRule(
+                    k => k.Has("Knows_Danforth_Manipulation"),
+                    new DialogueLine("Danforth… he used us. All of us.")
+                )
+            };
+
+            // ABIGAIL
+            npcDialogueRules["Abigail"] = new List<DialogueRule>()
+            {
+                new DialogueRule(
+                    k => !k.Has("Knows_Abigail_Lying"),
+                    new DialogueLine("I saw the devil… I swear it.")
+                ),
+
+                new DialogueRule(
+                    k => k.Has("Knows_Abigail_Lying"),
+                    new DialogueLine("Please… don’t tell anyone what I told you.")
+                )
+            };
+
+            // WEAVER
+            npcDialogueRules["Weaver"] = new List<DialogueRule>()
+            {
+                new DialogueRule(
+                    k => true,
+                    new DialogueLine("Truth bends, but it does not break. Follow the threads.")
+                )
+            };
+        }
+
+        // ============================
+        // LOOP / DAY CONTROL
+        // ============================
+        public void StartDayOne()
+        {
+            currentLoop = 1;
+            currentStoryBeat = "Day1_Start";
+        }
+
+        public void ResetLoop()
+        {
+            currentLoop++;
+            currentStoryBeat = "Day1_Start";
+        }
+
+        // ============================
+        // YOUR ORIGINAL OVERLOOK SCENE
+        // ============================
         public void StartOverlookScene()
         {
             StartCoroutine(RunScene());
@@ -44,9 +145,7 @@ namespace CS4700
             }
         }
 
-        // =========================================
         // LOOP 1
-        // =========================================
         IEnumerator Loop1()
         {
             D.OpenDialogue("The traveler has no shadow! Abigail, speak!", "Caleb");
@@ -78,9 +177,7 @@ namespace CS4700
             StartCoroutine(Fail());
         }
 
-        // =========================================
         // MID LOOP
-        // =========================================
         IEnumerator MidLoop()
         {
             D.OpenDialogue("Abigail, speak!", "Caleb");
@@ -105,9 +202,7 @@ namespace CS4700
             StartCoroutine(Fail());
         }
 
-        // =========================================
         // FINAL LOOP
-        // =========================================
         IEnumerator FinalLoop()
         {
             D.OpenDialogue("Caleb... look at this ledger.", "Silas");
@@ -131,7 +226,7 @@ namespace CS4700
             D.OpenDialogue("The loop is broken.", "Weaver");
         }
 
-        // =========================================
+        // FAIL
         IEnumerator Fail()
         {
             yield return Wait();
@@ -147,6 +242,31 @@ namespace CS4700
         {
             while (DialogueManager.Instance.IsDialogueOpen)
                 yield return null;
+        }
+    }
+
+    // ============================
+    // SUPPORTING CLASSES
+    // ============================
+    public class DialogueRule
+    {
+        public System.Func<ChronicleOfEchoes, bool> ConditionMet;
+        public DialogueLine line;
+
+        public DialogueRule(System.Func<ChronicleOfEchoes, bool> condition, DialogueLine line)
+        {
+            ConditionMet = condition;
+            this.line = line;
+        }
+    }
+
+    public class DialogueLine
+    {
+        public string text;
+
+        public DialogueLine(string t)
+        {
+            text = t;
         }
     }
 }
