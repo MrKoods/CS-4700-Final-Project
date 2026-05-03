@@ -26,5 +26,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/InsideHouseTR.unity
     guid: 95762fa7d71394e03aedf60b02141260
+  - enabled: 1
+    path: Assets/Scenes/CreditsScene.unity
+    guid: 52c4559257b63244f84298648f5ffdf6
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

@@ -9,14 +9,12 @@ namespace CS4700
 
         private Transform player;
 
-        void Start()
+        private void Start()
         {
-            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-            if (playerObj != null)
-                player = playerObj.transform;
+            player = GameObject.FindGameObjectWithTag("Player").transform;
         }
 
-        void Update()
+        private void Update()
         {
             if (player == null) return;
 
@@ -24,29 +22,31 @@ namespace CS4700
 
             if (dist <= interactDistance && Input.GetKeyDown(KeyCode.E))
             {
-                Interact();
+                string line = GetDialogueLine();
+                DialogueManager.Instance.OpenDialogue(line, npcName);
             }
         }
 
-        void Interact()
+        private string GetDialogueLine()
         {
-            // 1. Get the correct narrative line for this NPC
-            DialogueLine line = NarrativeController.Instance.GetDialogueForNPC(npcName);
+            // Try to find a dialogue script on this NPC
+            var dialogue = GetComponent<MonoBehaviour>();
 
-            if (line == null)
-            {
-                DialogueManager.Instance.OpenDialogue("…", npcName);
-                return;
-            }
+            // Check each possible dialogue script
+            if (TryGetComponent<AbigailDialogue>(out var abigail))
+                return abigail.GetDialogue();
 
-            // 2. Trigger knowledge if this line is marked as revealing something
-            if (line.triggersKnowledge)
-            {
-                GetComponent<KnowledgeTrigger>()?.Trigger();
-            }
+            if (TryGetComponent<FemaleVillagerDialogue>(out var femaleVillager))
+                return femaleVillager.GetDialogue();
 
-            // 3. Show the dialogue using your DialogueManager
-            DialogueManager.Instance.OpenDialogue(line.text, line.speaker);
+            if (TryGetComponent<CalebDialogue>(out var caleb))
+                return caleb.GetDialogue();
+
+            if (TryGetComponent<WeaverDialogue>(out var weaver))
+                return weaver.GetDialogue();
+
+            // Fallback
+            return "...";
         }
     }
 }
