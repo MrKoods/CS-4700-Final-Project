@@ -3560,15 +3560,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -2093772787462966335, guid: 593681a5c454742a5b4d0f0427909d4a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -463
+      value: -544.9
       objectReference: {fileID: 0}
     - target: {fileID: -2093772787462966335, guid: 593681a5c454742a5b4d0f0427909d4a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.1246605
+      value: -3.1
       objectReference: {fileID: 0}
     - target: {fileID: -2093772787462966335, guid: 593681a5c454742a5b4d0f0427909d4a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 673
+      value: 626.3
       objectReference: {fileID: 0}
     - target: {fileID: -2093772787462966335, guid: 593681a5c454742a5b4d0f0427909d4a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6174,7 +6174,7 @@ Transform:
   m_LocalScale: {x: 110, y: 1, z: 110}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1282246840}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &844236534
 MeshRenderer:
@@ -7477,6 +7477,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CS4700.InteractableNPC
   npcName: 
   interactDistance: 2
+  player: {fileID: 0}
 --- !u!114 &1084152457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7489,7 +7490,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05d4954d8d241c34487a2db3d9db117a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CS4700.NPCWander
-  WanderRadius: 4
+  WanderRadius: 105
   MoveSpeed: 0.8
   RotationSpeed: 120
   ArrivalDistance: 0.3
@@ -7555,6 +7556,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68b77723c063722499291ab61be3b929, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CS4700.WeaverDialogue
+  npcName: Weaver
+  interactDistance: 2
 --- !u!1 &1085197857
 GameObject:
   m_ObjectHideFlags: 0
@@ -9439,6 +9442,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 360223366}
+  - {fileID: 844236533}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1292146476
@@ -9604,6 +9608,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CS4700.InteractableNPC
   npcName: 
   interactDistance: 2
+  player: {fileID: 0}
 --- !u!114 &1317649370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9616,7 +9621,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05d4954d8d241c34487a2db3d9db117a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CS4700.NPCWander
-  WanderRadius: 4
+  WanderRadius: 105
   MoveSpeed: 1
   RotationSpeed: 180
   ArrivalDistance: 0.3
@@ -9704,6 +9709,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70268fc3deb30944f920c23ff24c5174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CS4700.AbigailDialogue
+  npcName: Abigail
+  interactDistance: 2
 --- !u!1001 &1321459772
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10274,6 +10281,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 01ddba40531dd0f478d69377578f9c06, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1401012958}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 01ddba40531dd0f478d69377578f9c06, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1401012959}
   m_SourcePrefab: {fileID: 100100000, guid: 01ddba40531dd0f478d69377578f9c06, type: 3}
 --- !u!4 &1401012951 stripped
 Transform:
@@ -10321,6 +10331,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CS4700.InteractableNPC
   npcName: 
   interactDistance: 2
+  player: {fileID: 0}
 --- !u!114 &1401012955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10333,7 +10344,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05d4954d8d241c34487a2db3d9db117a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CS4700.NPCWander
-  WanderRadius: 5
+  WanderRadius: 105
   MoveSpeed: 1.1
   RotationSpeed: 160
   ArrivalDistance: 0.3
@@ -10406,6 +10417,20 @@ CapsuleCollider:
   m_Height: 2.4402237
   m_Direction: 1
   m_Center: {x: 0, y: 0.72011137, z: 0}
+--- !u!114 &1401012959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1401012952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1944d4627e92b0541acb2b6acd34c3a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CS4700.MaleMedievalNPCDialogue
+  npcName: Mr. Smith
+  interactDistance: 2
 --- !u!1001 &1403508658
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11310,6 +11335,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0b114632576584b4abc935015fb86c72, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1517346781}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0b114632576584b4abc935015fb86c72, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1517346782}
   m_SourcePrefab: {fileID: 100100000, guid: 0b114632576584b4abc935015fb86c72, type: 3}
 --- !u!4 &1517346774 stripped
 Transform:
@@ -11357,6 +11385,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CS4700.InteractableNPC
   npcName: 
   interactDistance: 2
+  player: {fileID: 0}
 --- !u!114 &1517346778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11369,7 +11398,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05d4954d8d241c34487a2db3d9db117a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CS4700.NPCWander
-  WanderRadius: 5
+  WanderRadius: 105
   MoveSpeed: 1.1
   RotationSpeed: 160
   ArrivalDistance: 0.3
@@ -11442,6 +11471,20 @@ CapsuleCollider:
   m_Height: 2.4754415
   m_Direction: 1
   m_Center: {x: 0, y: 0.73772, z: 0}
+--- !u!114 &1517346782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1517346775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 510f7e2315ba3b64b87b461ca83a1254, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CS4700.FemaleMedievalNPCDialogue
+  npcName: Mrs. Smith
+  interactDistance: 2
 --- !u!1 &1524617732
 GameObject:
   m_ObjectHideFlags: 0
@@ -13001,9 +13044,6 @@ PrefabInstance:
       addedObject: {fileID: 1767539240}
     - targetCorrespondingSourceObject: {fileID: 3134033006564609644, guid: a87ec02c6c98d264d9a2750121bd9b42, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1767539239}
-    - targetCorrespondingSourceObject: {fileID: 3134033006564609644, guid: a87ec02c6c98d264d9a2750121bd9b42, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1767539242}
     - targetCorrespondingSourceObject: {fileID: 3134033006564609644, guid: a87ec02c6c98d264d9a2750121bd9b42, type: 3}
       insertIndex: -1
@@ -13011,6 +13051,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3134033006564609644, guid: a87ec02c6c98d264d9a2750121bd9b42, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1767539244}
+    - targetCorrespondingSourceObject: {fileID: 3134033006564609644, guid: a87ec02c6c98d264d9a2750121bd9b42, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1767539245}
   m_SourcePrefab: {fileID: 100100000, guid: a87ec02c6c98d264d9a2750121bd9b42, type: 3}
 --- !u!4 &1767539235 stripped
 Transform:
@@ -13041,20 +13084,6 @@ MonoBehaviour:
   - {fileID: 1840726384}
   MoveSpeed: 1.5
   WaypointReachedThreshold: 0.2
---- !u!114 &1767539239
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1767539236}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f281e9d96d705ca4c850fa33e6754454, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CS4700.InteractableNPC
-  npcName: 
-  interactDistance: 2
 --- !u!114 &1767539240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13067,7 +13096,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05d4954d8d241c34487a2db3d9db117a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CS4700.NPCWander
-  WanderRadius: 5
+  WanderRadius: 105
   MoveSpeed: 1.1
   RotationSpeed: 160
   ArrivalDistance: 0.3
@@ -13143,6 +13172,20 @@ CapsuleCollider:
   m_Height: 2.4464316
   m_Direction: 1
   m_Center: {x: 0, y: 0.72321546, z: 0}
+--- !u!114 &1767539245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1767539236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc5cadac6834498478998c0b5fe3cecd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CS4700.DanforthDialogue
+  npcName: Danforth
+  interactDistance: 2
 --- !u!1 &1770859228 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6741692793215712667, guid: 593681a5c454742a5b4d0f0427909d4a, type: 3}
@@ -15377,9 +15420,10 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f281e9d96d705ca4c850fa33e6754454, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CS4700.InteractableNPC
+  m_EditorClassIdentifier: 
   npcName: 
   interactDistance: 2
+  player: {fileID: 0}
 --- !u!114 &2091348143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15392,7 +15436,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05d4954d8d241c34487a2db3d9db117a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CS4700.NPCWander
-  WanderRadius: 5
+  WanderRadius: 105
   MoveSpeed: 1.1
   RotationSpeed: 160
   ArrivalDistance: 0.3
@@ -15480,6 +15524,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8debfd5836127464c9a7abcd250e7e64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CS4700.FemaleVillagerDialogue
+  npcName: Female Villager
+  interactDistance: 2
 --- !u!1 &2091385287
 GameObject:
   m_ObjectHideFlags: 0
@@ -15648,6 +15694,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CS4700.InteractableNPC
   npcName: 
   interactDistance: 2
+  player: {fileID: 0}
 --- !u!114 &2112359209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15660,7 +15707,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05d4954d8d241c34487a2db3d9db117a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CS4700.NPCWander
-  WanderRadius: 4
+  WanderRadius: 105
   MoveSpeed: 1
   RotationSpeed: 180
   ArrivalDistance: 0.3
@@ -15748,6 +15795,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1d686ff2bd190b4d8c9447187e40121, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CS4700.CalebDialogue
+  npcName: Caleb
+  interactDistance: 2
 --- !u!1 &2133580763
 GameObject:
   m_ObjectHideFlags: 0
@@ -15862,7 +15911,6 @@ SceneRoots:
   - {fileID: 410896533}
   - {fileID: 1282246840}
   - {fileID: 1304728702}
-  - {fileID: 844236533}
   - {fileID: 382753376}
   - {fileID: 237671825}
   - {fileID: 2050932341}

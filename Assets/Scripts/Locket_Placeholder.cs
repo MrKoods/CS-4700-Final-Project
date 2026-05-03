@@ -17,8 +17,14 @@ namespace CS4700
                     "Silas"
                 );
 
-                Destroy(gameObject);
+                StartCoroutine(DestroyNextFrame());
             }
+        }
+
+        private System.Collections.IEnumerator DestroyNextFrame()
+        {
+            yield return null;
+            Destroy(gameObject);
         }
     }
 }

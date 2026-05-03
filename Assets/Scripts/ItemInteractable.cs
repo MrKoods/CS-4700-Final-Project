@@ -2,7 +2,8 @@ using UnityEngine;
 
 namespace CS4700
 {
-    public class Interactable : MonoBehaviour
+    public class ItemInteractable : MonoBehaviour
+
     {
         [Header("Optional Dialogue")]
         [TextArea]

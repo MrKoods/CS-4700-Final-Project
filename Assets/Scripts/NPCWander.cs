@@ -16,7 +16,7 @@ namespace CS4700
         // Constants
         // ---------------------------------------------------------------------------
 
-        private const float DefaultWanderRadius    = 5f;
+        private const float DefaultWanderRadius    = 105f;
         private const float DefaultMoveSpeed       = 1.2f;
         private const float DefaultRotationSpeed   = 180f;
         private const float DefaultArrivalDistance = 0.3f;
