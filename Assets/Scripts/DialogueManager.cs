@@ -7,7 +7,7 @@ namespace CS4700
         public static DialogueManager Instance { get; private set; }
 
         private const float DialogueBoxWidth = 500f;
-        private const float DialogueBoxHeight = 140f;
+        private const float DialogueBoxHeight = 200f; // increased height
 
         private string _currentText = "";
         private string _speakerName = "";
@@ -66,28 +66,28 @@ namespace CS4700
 
             GUI.Box(new Rect(x, y, DialogueBoxWidth, DialogueBoxHeight), "");
 
-            // NAME
+            // NAME (BIGGER)
             if (!string.IsNullOrEmpty(_speakerName))
             {
                 GUIStyle nameStyle = new GUIStyle(GUI.skin.label)
                 {
                     fontStyle = FontStyle.Bold,
-                    fontSize = 18
+                    fontSize = 28 // bigger name text
                 };
 
-                GUI.Label(new Rect(x + 10, y + 5, 400, 25), _speakerName, nameStyle);
+                GUI.Label(new Rect(x + 10, y + 5, 400, 30), _speakerName, nameStyle);
             }
 
-            // TEXT
+            // TEXT (BIGGER)
             GUIStyle textStyle = new GUIStyle(GUI.skin.label)
             {
-                fontSize = 16,
+                fontSize = 22, // bigger dialogue text
                 wordWrap = true
             };
 
-            float textY = string.IsNullOrEmpty(_speakerName) ? y + 15 : y + 30;
+            float textY = string.IsNullOrEmpty(_speakerName) ? y + 15 : y + 40;
 
-            GUI.Label(new Rect(x + 10, textY, DialogueBoxWidth - 20, 50), _currentText, textStyle);
+            GUI.Label(new Rect(x + 10, textY, DialogueBoxWidth - 20, 100), _currentText, textStyle);
 
             // CHOICES
             if (_showingChoices && _choices != null)
@@ -95,7 +95,7 @@ namespace CS4700
                 for (int i = 0; i < _choices.Length; i++)
                 {
                     GUI.Label(
-                        new Rect(x + 20, y + 80 + (i * 20), 400, 20),
+                        new Rect(x + 20, y + 120 + (i * 22), 400, 20),
                         $"{i + 1}. {_choices[i]}"
                     );
                 }
