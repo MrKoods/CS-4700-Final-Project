@@ -7,7 +7,7 @@ namespace CS4700
         public static DialogueManager Instance { get; private set; }
 
         private const float DialogueBoxWidth = 500f;
-        private const float DialogueBoxHeight = 200f; // increased height
+        private const float DialogueBoxHeight = 200f;
 
         private string _currentText = "";
         private string _speakerName = "";
@@ -15,7 +15,7 @@ namespace CS4700
         private bool _isDialogueOpen;
         public bool IsDialogueOpen => _isDialogueOpen;
 
-        // NEW: choices
+        // Choices
         private string[] _choices;
         private System.Action<int> _onChoiceSelected;
         private bool _showingChoices;
@@ -66,22 +66,22 @@ namespace CS4700
 
             GUI.Box(new Rect(x, y, DialogueBoxWidth, DialogueBoxHeight), "");
 
-            // NAME (BIGGER)
+            // NAME
             if (!string.IsNullOrEmpty(_speakerName))
             {
                 GUIStyle nameStyle = new GUIStyle(GUI.skin.label)
                 {
                     fontStyle = FontStyle.Bold,
-                    fontSize = 28 // bigger name text
+                    fontSize = 28
                 };
 
                 GUI.Label(new Rect(x + 10, y + 5, 400, 30), _speakerName, nameStyle);
             }
 
-            // TEXT (BIGGER)
+            // TEXT
             GUIStyle textStyle = new GUIStyle(GUI.skin.label)
             {
-                fontSize = 22, // bigger dialogue text
+                fontSize = 22,
                 wordWrap = true
             };
 
@@ -137,12 +137,14 @@ namespace CS4700
             SetPlayerMovement(false);
         }
 
+        // ⭐ FIXED VERSION — NO AUTO‑CLOSE ⭐
         private void SelectChoice(int index)
         {
             _showingChoices = false;
-            _isDialogueOpen = false;
 
-            SetPlayerMovement(true);
+            // DO NOT close the dialogue here.
+            // Let the callback open the next dialogue page normally.
+            // This makes the player press E to continue.
 
             _onChoiceSelected?.Invoke(index);
         }

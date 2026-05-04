@@ -26,7 +26,6 @@ namespace CS4700
 
         private void StartDialogue()
         {
-            // FINAL LOOP — all key knowledge
             if (coe.Has("HasLedger") && coe.Has("HasLocket") &&
                 coe.Has("Knows_Abigail_Blackmail") && coe.Has("Knows_Caleb_Targeted"))
             {
@@ -34,19 +33,17 @@ namespace CS4700
                 return;
             }
 
-            // MID LOOP — knows Abigail is being blackmailed
             if (coe.Has("Knows_Abigail_Blackmail"))
             {
                 MidLoop_Start();
                 return;
             }
 
-            // LOOP 1 — no knowledge
             Loop1_Start();
         }
 
         // ============================
-        // LOOP 1 — The Descent of Shadow (FAILURE)
+        // LOOP 1 — FAILURE
         // ============================
         private void Loop1_Start()
         {
@@ -65,7 +62,6 @@ namespace CS4700
 
         private void Loop1_Choice(int index)
         {
-            // No matter what you pick in Loop 1, you die.
             KillPlayer(
                 "Take them both. The gallows will sort truth from lies.",
                 WeaverLine_Loop1()
@@ -73,7 +69,7 @@ namespace CS4700
         }
 
         // ============================
-        // MID LOOP — The Bitter Counsel (FAILURE)
+        // MID LOOP — FAILURE
         // ============================
         private void MidLoop_Start()
         {
@@ -92,7 +88,6 @@ namespace CS4700
 
         private void MidLoop_Choice(int index)
         {
-            // Still failure: Caleb’s grief is armor.
             KillPlayer(
                 "You twist truth like a serpent. That is proof enough.",
                 WeaverLine_MidLoop()
@@ -100,7 +95,7 @@ namespace CS4700
         }
 
         // ============================
-        // FINAL LOOP — The Breaking of the Loom (TRUE PATH)
+        // FINAL LOOP — TRUE PATH
         // ============================
         private void FinalLoop_Start()
         {
@@ -131,15 +126,14 @@ namespace CS4700
                 return;
             }
 
-            // Staying silent in the final loop is still failure.
             KillPlayer(
                 "The gallows will sort truth from lies.",
-                WeaverLine_MidLoop() // still about pulling without proof
+                WeaverLine_MidLoop()
             );
         }
 
         // ============================
-        // APPEAL TO ABIGAIL (FAILURE PATH)
+        // APPEAL TO ABIGAIL (FAILURE)
         // ============================
         private void AppealToAbigail()
         {
@@ -148,21 +142,25 @@ namespace CS4700
                 "Silas"
             );
 
-            Invoke(nameof(AppealToAbigail_Continue), 2f);
+            DialogueManager.Instance.OnDialogueClosed += AppealToAbigail_Continue;
         }
 
         private void AppealToAbigail_Continue()
         {
+            DialogueManager.Instance.OnDialogueClosed -= AppealToAbigail_Continue;
+
             DialogueManager.Instance.OpenDialogue(
                 "Silas, stop! He’ll hear you!",
                 "Abigail"
             );
 
-            Invoke(nameof(AppealToAbigail_Fail), 2f);
+            DialogueManager.Instance.OnDialogueClosed += AppealToAbigail_Fail;
         }
 
         private void AppealToAbigail_Fail()
         {
+            DialogueManager.Instance.OnDialogueClosed -= AppealToAbigail_Fail;
+
             KillPlayer(
                 "You twist truth like a serpent. That is proof enough.",
                 WeaverLine_MidLoop()
@@ -170,7 +168,7 @@ namespace CS4700
         }
 
         // ============================
-        // PRESENT LEDGER (SUCCESS PATH)
+        // PRESENT LEDGER (SUCCESS)
         // ============================
         private void PresentLedger()
         {
@@ -179,91 +177,108 @@ namespace CS4700
                 "Silas"
             );
 
-            Invoke(nameof(PresentLedger_Continue), 2f);
+            DialogueManager.Instance.OnDialogueClosed += PresentLedger_Continue;
         }
 
         private void PresentLedger_Continue()
         {
+            DialogueManager.Instance.OnDialogueClosed -= PresentLedger_Continue;
+
             DialogueManager.Instance.OpenDialogue(
                 "…This is the Clerk’s seal.",
                 "Caleb"
             );
 
-            Invoke(nameof(PresentLedger_Date), 2f);
+            DialogueManager.Instance.OnDialogueClosed += PresentLedger_Date;
         }
 
         private void PresentLedger_Date()
         {
+            DialogueManager.Instance.OnDialogueClosed -= PresentLedger_Date;
+
             DialogueManager.Instance.OpenDialogue(
                 "Check the date. He signed your smithy into seizure—three days before your accusation.",
                 "Silas"
             );
 
-            Invoke(nameof(PresentLedger_Shaken), 2f);
+            DialogueManager.Instance.OnDialogueClosed += PresentLedger_Shaken;
         }
 
         private void PresentLedger_Shaken()
         {
+            DialogueManager.Instance.OnDialogueClosed -= PresentLedger_Shaken;
+
             DialogueManager.Instance.OpenDialogue(
                 "That’s… impossible…",
                 "Caleb"
             );
 
-            Invoke(nameof(PresentLocket_Start), 2f);
+            DialogueManager.Instance.OnDialogueClosed += PresentLocket_Start;
         }
 
         private void PresentLocket_Start()
         {
+            DialogueManager.Instance.OnDialogueClosed -= PresentLocket_Start;
+
             DialogueManager.Instance.OpenDialogue(
                 "And this—the locket he claimed the Devil stole from you.",
                 "Silas"
             );
 
-            Invoke(nameof(PresentLocket_AbigailReact), 2f);
+            DialogueManager.Instance.OnDialogueClosed += PresentLocket_AbigailReact;
         }
 
         private void PresentLocket_AbigailReact()
         {
+            DialogueManager.Instance.OnDialogueClosed -= PresentLocket_AbigailReact;
+
             DialogueManager.Instance.OpenDialogue(
                 "He… he said it was gone…",
                 "Abigail"
             );
 
-            Invoke(nameof(PresentLocket_Reveal), 2f);
+            DialogueManager.Instance.OnDialogueClosed += PresentLocket_Reveal;
         }
 
         private void PresentLocket_Reveal()
         {
+            DialogueManager.Instance.OnDialogueClosed -= PresentLocket_Reveal;
+
             DialogueManager.Instance.OpenDialogue(
                 "It was in Danforth’s desk. He lies. He owns your fear.",
                 "Silas"
             );
 
-            Invoke(nameof(FinalConfession), 2f);
+            DialogueManager.Instance.OnDialogueClosed += FinalConfession;
         }
 
         private void FinalConfession()
         {
+            DialogueManager.Instance.OnDialogueClosed -= FinalConfession;
+
             DialogueManager.Instance.OpenDialogue(
                 "It was him! Danforth made me say the names! He said he’d take my family if I didn’t!",
                 "Abigail"
             );
 
-            Invoke(nameof(WeaverSuccess), 3f);
+            DialogueManager.Instance.OnDialogueClosed += WeaverSuccess;
         }
 
         private void WeaverSuccess()
         {
+            DialogueManager.Instance.OnDialogueClosed -= WeaverSuccess;
+
             DialogueManager.Instance.OpenDialogue(
                 "Ah… the thread holds.\nTruth, at last, cuts deeper than fear.",
                 "Weaver"
             );
 
-            Invoke(nameof(Ending), 3f);
+            DialogueManager.Instance.OnDialogueClosed += Ending;
         }
 
         private void Ending()
         {
+            DialogueManager.Instance.OnDialogueClosed -= Ending;
             SceneManager.LoadScene("CreditsScene");
         }
 
@@ -275,22 +290,25 @@ namespace CS4700
             storedWeaverLine = weaverLine;
 
             DialogueManager.Instance.OpenDialogue(calebLine, "Caleb");
-            Invoke(nameof(WeaverCommentary), 2f);
+            DialogueManager.Instance.OnDialogueClosed += WeaverCommentary;
         }
 
         private void WeaverCommentary()
         {
+            DialogueManager.Instance.OnDialogueClosed -= WeaverCommentary;
+
             DialogueManager.Instance.OpenDialogue(storedWeaverLine, "Weaver");
-            Invoke(nameof(ResetLoop), 3f);
+            DialogueManager.Instance.OnDialogueClosed += ResetLoop;
         }
 
         private void ResetLoop()
         {
+            DialogueManager.Instance.OnDialogueClosed -= ResetLoop;
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
         // ============================
-        // WEAVER LINES (FROM MASTER SCRIPT)
+        // WEAVER LINES
         // ============================
         private string WeaverLine_Loop1()
         {

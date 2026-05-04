@@ -1,0 +1,107 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &7790081552402984113
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: bffb0ba87f8b887468bfa5249d2cf4a1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.2856932
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bffb0ba87f8b887468bfa5249d2cf4a1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.7344514
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bffb0ba87f8b887468bfa5249d2cf4a1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -42.23086
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bffb0ba87f8b887468bfa5249d2cf4a1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.008388155
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bffb0ba87f8b887468bfa5249d2cf4a1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.9999576
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bffb0ba87f8b887468bfa5249d2cf4a1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.000075330514
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bffb0ba87f8b887468bfa5249d2cf4a1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.0037889562
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bffb0ba87f8b887468bfa5249d2cf4a1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -180.961
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bffb0ba87f8b887468bfa5249d2cf4a1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0.43400574
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bffb0ba87f8b887468bfa5249d2cf4a1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -0.005004883
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: bffb0ba87f8b887468bfa5249d2cf4a1, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a0555e6b64123aa4185513d3545404d9, type: 2}
+    - target: {fileID: 919132149155446097, guid: bffb0ba87f8b887468bfa5249d2cf4a1, type: 3}
+      propertyPath: m_Name
+      value: Ledger_Placeholder
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bffb0ba87f8b887468bfa5249d2cf4a1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2336453976830650567}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bffb0ba87f8b887468bfa5249d2cf4a1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8661151315901368568}
+  m_SourcePrefab: {fileID: 100100000, guid: bffb0ba87f8b887468bfa5249d2cf4a1, type: 3}
+--- !u!1 &6979035931743392224 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: bffb0ba87f8b887468bfa5249d2cf4a1, type: 3}
+  m_PrefabInstance: {fileID: 7790081552402984113}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &2336453976830650567
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6979035931743392224}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.019007822, y: 0.007508615, z: 0.014696654}
+  m_Center: {x: -0.0000009285286, y: -0.00012782277, z: 0.007348327}
+--- !u!114 &8661151315901368568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6979035931743392224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ff2cbdad90800e47937f1536f50dfa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CS4700.Ledger_Placeholder
