@@ -1,38 +1,40 @@
-# ========== Unity ==========
-[Ll]ibrary/
-[Tt]emp/
-[Oo]bj/
-[Bb]uild/
-[Bb]uilds/
-[Ll]ogs/
-UserSettings/
-MemoryCaptures/
+Scan my Unity project and safely clean up files that should not be committed to GitHub.
 
-# ========== IDE ==========
-.vs/
-.idea/
-*.csproj
-*.unityproj
-*.sln
-*.suo
-*.tmp
-*.user
-*.userprefs
-*.pidb
-*.booproj
-*.svd
+Main goal:
+Fix the GitHub issue caused by very large Unity asset package files, especially anything related to:
+- Stylized Rocks & Cactus
+- GameReady3D
+- .unitypackage files over 100MB
 
-# ========== OS ==========
-.DS_Store
-Thumbs.db
+Do NOT delete anything currently used in the scene unless it is only an unused import package file.
 
-# ========== Build Files ==========
-*.apk
-*.aab
-*.exe
+Tasks:
+1. Find all .unitypackage files in the project.
+2. Remove them from Git tracking or move them outside the Unity project folder.
+3. Do NOT delete imported usable assets like prefabs, materials, textures, meshes, FBX files, or scene objects unless they are unused duplicates.
+4. Update the .gitignore file for a Unity project.
+5. Make sure the .gitignore includes:
+   - Library/
+   - Temp/
+   - Obj/
+   - Build/
+   - Builds/
+   - Logs/
+   - UserSettings/
+   - MemoryCaptures/
+   - *.unitypackage
+   - .vs/
+   - .vscode/
+   - *.csproj
+   - *.sln
+   - .DS_Store
+   - Thumbs.db
+6. Check Git status after cleanup.
+7. Confirm that no files over 100MB are staged for commit.
+8. Do not change scene object positions, materials, prefabs, or gameplay scripts.
 
-# ========== Gradle ==========
-.gradle/
-
-# ========== Crash Logs ==========
-sysinfo.txt
+After finishing, give me a summary of:
+- What large files were found
+- What was removed or ignored
+- What changed in .gitignore
+- Whether the project is now safe to commit and push
