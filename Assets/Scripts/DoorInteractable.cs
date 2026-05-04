@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class DoorInteractable : MonoBehaviour
 {
-	private const float DefaultInteractionRadius = 3f;
+	private const float DefaultInteractionRadius = 7f;
 	private Transform	_playerTransform;
 	public float InteractionRadius = DefaultInteractionRadius;
 
