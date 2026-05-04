@@ -1,7 +1,6 @@
 fileFormatVersion: 2
-guid: 03d6d5425c228f747bfc5f83e9bc165b
+guid: abc00000000001923964942334975743
 NativeFormatImporter:
-  externalObjects: {}
   mainObjectFileID: 2100000
   userData: 
   assetBundleName: 
@@ -11,6 +10,5 @@ AssetOrigin:
   productId: 355372
   packageName: Stylized Rocks and Cactus
   packageVersion: 1.0
-  assetPath: Assets/GameReady3D/Stylized_Rocks_and Cactus/Built-in/StaticMesh/Materials/No
-    Name.mat
+  assetPath: Assets/GameReady3D/Stylized_Rocks_and Cactus/Built-in/Materials/M_Rock_2.mat
   uploadId: 846674

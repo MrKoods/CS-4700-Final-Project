@@ -32,8 +32,9 @@ namespace CS4700.Editor
         }
 
         /// <summary>
-        /// Switches ambient mode to flat colour and reduces reflection intensity
-        /// to prevent scene washout. Marks the active scene dirty.
+        /// Switches ambient mode to flat colour, reduces reflection intensity, and
+        /// configures baseline fog so it is visible in both editor and play mode.
+        /// BoundaryFog.cs adjusts fog density dynamically at runtime.
         /// </summary>
         [MenuItem(MenuPath)]
         public static void Apply()
@@ -50,13 +51,16 @@ namespace CS4700.Editor
             // Reduce reflection probes so flat opaque surfaces aren't over-lit.
             RenderSettings.reflectionIntensity = 0.4f;
 
-            // Fog off — keeps the distant geometry readable.
-            RenderSettings.fog = false;
+            // Enable baseline fog — BoundaryFog.cs ramps the density up near the boundary.
+            RenderSettings.fog        = true;
+            RenderSettings.fogMode    = FogMode.ExponentialSquared;
+            RenderSettings.fogColor   = new Color(0.55f, 0.58f, 0.62f, 1f);
+            RenderSettings.fogDensity = 0.012f;
 
             UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(
                 UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene());
 
-            Debug.Log("[CS4700] Environment lighting fixed: Flat ambient (0.18 grey), reflection 0.4, fog off.");
+            Debug.Log("[CS4700] Environment lighting fixed: Flat ambient (0.18 grey), reflection 0.4, fog on (density 0.008).");
         }
     }
 }
