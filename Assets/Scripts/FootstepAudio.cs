@@ -4,8 +4,12 @@ public class FootstepAudio : MonoBehaviour
 {
     public AudioSource audioSource;
     public Animator animator;
-    public AudioClip leftFootstep;
-    public AudioClip rightFootstep;
+    public AudioClip leftFootstepOutdoor;
+    public AudioClip rightFootstepOutdoor;
+
+    public AudioClip leftFootstepIndoor;
+    
+    public AudioClip rightFootstepIndoor;
     public float walkStepInterval = 0.5f;
     public float sprintStepInterval = 0.3f;
 
@@ -15,6 +19,8 @@ public class FootstepAudio : MonoBehaviour
 
     private float stepVolume;
     private bool isLeftStep = true;
+
+    public bool isIndoor = false;
 
     void Update()
     {
@@ -54,10 +60,17 @@ public class FootstepAudio : MonoBehaviour
     void PlayFootstep()
     {
         if (audioSource == null) return;
+        AudioClip clip;
+        if(isIndoor) {
+            clip = isLeftStep ? leftFootstepIndoor : rightFootstepIndoor;
+                    audioSource.PlayOneShot(clip, stepVolume/2);
+        }
+        else {
+            clip = isLeftStep ? leftFootstepOutdoor : rightFootstepOutdoor;
+                    audioSource.PlayOneShot(clip, stepVolume);
+        }
 
-        AudioClip clip = isLeftStep ? leftFootstep : rightFootstep;
 
-        audioSource.PlayOneShot(clip, stepVolume);
 
         isLeftStep = !isLeftStep;
     }
