@@ -23,7 +23,8 @@ AudioMixerSnapshotController:
   m_Name: Indoor
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: 8ea49f675f626aa4aa021151526bcee5
-  m_FloatValues: {}
+  m_FloatValues:
+    26722c88ca922c24c89c231b403485fc: -80
   m_TransitionOverrides: {}
 --- !u!243 &-1889793278785453092
 AudioMixerGroupController:
@@ -82,7 +83,7 @@ AudioMixerController:
     - 3a6317bd13921be489394e50df6a2f6e
     name: View
   m_CurrentViewIndex: 0
-  m_TargetSnapshot: {fileID: -7725197480927557472}
+  m_TargetSnapshot: {fileID: 24500006}
 --- !u!243 &24300002
 AudioMixerGroupController:
   m_ObjectHideFlags: 0
@@ -127,7 +128,8 @@ AudioMixerSnapshotController:
   m_Name: Outdoor
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: b0e3e9181afba18418c20b85abe60af6
-  m_FloatValues: {}
+  m_FloatValues:
+    0654a35b7c223d84f9f21ea6cbe0ef18: -80
   m_TransitionOverrides: {}
 --- !u!243 &4059223429285100212
 AudioMixerGroupController:

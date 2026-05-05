@@ -46319,12 +46319,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FootstepAudio
   audioSource: {fileID: 1216708666}
   animator: {fileID: 1216708662}
-  leftFootstep: {fileID: 8300000, guid: ac3f6de3414c3d4459d675a8fc32ac97, type: 3}
-  rightFootstep: {fileID: 8300000, guid: 83a354cc1b191914fad0ef5fc8dc21ab, type: 3}
+  leftFootstepOutdoor: {fileID: 8300000, guid: ac3f6de3414c3d4459d675a8fc32ac97, type: 3}
+  rightFootstepOutdoor: {fileID: 8300000, guid: 83a354cc1b191914fad0ef5fc8dc21ab, type: 3}
+  leftFootstepIndoor: {fileID: 8300000, guid: 8c6667658064ec94495bb6c47469061a, type: 3}
+  rightFootstepIndoor: {fileID: 8300000, guid: 2419d4d332936864c9c5dc2bf1fb93fe, type: 3}
   walkStepInterval: 0.3
   sprintStepInterval: 0.3
   walkVolume: 0.8
   sprintVolume: 1
+  isIndoor: 0
 --- !u!82 &1216708666
 AudioSource:
   m_ObjectHideFlags: 0
