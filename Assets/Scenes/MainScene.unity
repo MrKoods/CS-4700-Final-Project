@@ -81241,7 +81241,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 926352263}
     m_Modifications:
-    - target: {fileID: 1030971970, guid: abc00000000016566050303567495793, type: 3}
+    - target: {fileID: 1  - {fileID: 1247131779}
+  - {fileID: 1388564226}
+  - {fileID: 1439525905}
+970, guid: abc00000000016566050303567495793, type: 3}
       propertyPath: m_Name
       value: Rock_61
       objectReference: {fileID: 0}
@@ -83462,9 +83465,4 @@ SceneRoots:
   - {fileID: 645127016}
   - {fileID: 889527694}
   - {fileID: 1637137100}
-<<<<<<< HEAD
-  - {fileID: 1439525905}
-=======
-  - {fileID: 1388564226}
-  - {fileID: 1247131779}
->>>>>>> d18b2c52b62daedf6c328c2e6f4b02b4bd291e10
+    -
