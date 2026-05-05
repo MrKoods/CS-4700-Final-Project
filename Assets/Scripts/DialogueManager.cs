@@ -6,6 +6,8 @@ namespace CS4700
     {
         public static DialogueManager Instance { get; private set; }
 
+        public PageTurnSound pageTurnSound;
+
         private const float DialogueBoxWidth = 500f;
         private const float DialogueBoxHeight = 200f;
 
@@ -111,6 +113,8 @@ namespace CS4700
         // =========================================
         public void OpenDialogue(string text, string speaker = "")
         {
+            pageTurnSound.TurnPage();
+            
             _currentText = text;
             _speakerName = speaker;
 
