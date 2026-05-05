@@ -14,9 +14,9 @@ namespace CS4700
         // Boundary — must match PlayerBoundary constants exactly.
         // -------------------------------------------------------------------------
 
-        private static readonly Vector3 BoundaryCenter = new Vector3(-8.43f, 0f, -11.44f);
-        private const float HalfExtentX   = 120f;
-        private const float HalfExtentZ   = 120f;
+        private static readonly Vector3 BoundaryCenter = new Vector3(-45.43f, 0f, -11.44f);
+        private const float HalfExtentX   = 280f;
+        private const float HalfExtentZ   = 200f;
         private const float SoftZoneWidth = 50f;   // ramp starts 50 units before the hard edge
 
         // -------------------------------------------------------------------------
