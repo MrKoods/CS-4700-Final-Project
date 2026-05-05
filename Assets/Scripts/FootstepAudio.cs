@@ -4,8 +4,6 @@ public class FootstepAudio : MonoBehaviour
 {
     public AudioSource audioSource;
     public Animator animator;
-
-    [Header("Footstep Clips")]
     public AudioClip leftFootstep;
     public AudioClip rightFootstep;
     public float walkStepInterval = 0.5f;
@@ -22,7 +20,6 @@ public class FootstepAudio : MonoBehaviour
     {
         float interval = GetCurrentStepInterval();
 
-        // If interval is 0 or negative, we assume no footsteps for this state
         if (interval <= 0f)
         {
             stepTimer = 0f;
