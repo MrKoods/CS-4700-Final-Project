@@ -19,15 +19,15 @@ namespace CS4700
         // ---------------------------------------------------------------------------
 
         /// <summary>World-space centre of the play area (town centre).</summary>
-        private static readonly Vector3 BoundaryCenter = new Vector3(-8.43f, 0f, -11.44f);
+        private static readonly Vector3 BoundaryCenter = new Vector3(-45.43f, 0f, -11.44f);
 
         /// <summary>
         /// Half-width (X) and half-depth (Z) of the hard boundary in world units.
         /// Ground world half-extent ≈ 1375 * 0.333 ≈ 458 units; town area is ~40 units.
         /// 120 units gives comfortable exploration without reaching the visual edge.
         /// </summary>
-        private const float HalfExtentX = 120f;
-        private const float HalfExtentZ = 120f;
+        private const float HalfExtentX = 280f;
+        private const float HalfExtentZ = 200f;
 
         /// <summary>
         /// How many units before the hard limit the soft push-back begins.
