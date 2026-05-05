@@ -6308,6 +6308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63b366cf47da2bd4db22c95cfdcc9998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CS4700.DialogueManager
+  pageTurnSound: {fileID: 415149581}
 --- !u!1001 &178917031
 PrefabInstance:
   m_ObjectHideFlags: 0
