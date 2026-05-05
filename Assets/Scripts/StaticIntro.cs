@@ -6,13 +6,14 @@ public class StaticIntro : MonoBehaviour
     public string nextScene = "MainScene";
     public float minDisplayTime = 2f;
 
-    private float _timer;
+    private float timer;
 
     private void Update()
     {
-        _timer += Time.deltaTime;
+        timer += Time.deltaTime;
 
-        if (_timer >= minDisplayTime && Input.anyKeyDown)
+        // After 2 seconds, allow ANY key to continue
+        if (timer >= minDisplayTime && Input.anyKeyDown)
         {
             SceneManager.LoadScene(nextScene);
         }

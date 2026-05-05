@@ -1,4 +1,5 @@
 using UnityEngine;
+using CS4700;
 
 namespace CS4700
 {
@@ -12,20 +13,18 @@ namespace CS4700
             {
                 ChronicleOfEchoes.Instance.Unlock("HasLedger");
 
-                // Open the dialogue box exactly like an NPC
                 DialogueManager.Instance.OpenDialogue(
                     "A dusty ledger… forged signatures… Danforth planned everything.",
                     "Silas"
                 );
 
-                // Delay destruction so UI can render
                 StartCoroutine(DestroyNextFrame());
             }
         }
 
         private System.Collections.IEnumerator DestroyNextFrame()
         {
-            yield return null; // wait 1 frame
+            yield return null;
             Destroy(gameObject);
         }
     }

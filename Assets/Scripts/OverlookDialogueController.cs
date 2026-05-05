@@ -13,6 +13,32 @@ namespace CS4700
         private void Start()
         {
             coe = ChronicleOfEchoes.Instance;
+
+            // FIRST TIME EVER IN THE GAME
+            if (!coe.Has("LoopStarted"))
+            {
+                coe.Unlock("LoopStarted");
+                DirectionUI.Instance.SetDirection("Head to the town gathering.");
+                return;
+            }
+
+            // AFTER DEATH — KEEP THIS UNTIL CLUES CHANGE IT
+            if (!coe.AllCluesFound() && !coe.Has("Knows_Abigail_Blackmail"))
+            {
+                DirectionUI.Instance.SetDirection("Uncover the mystery. Explore around town.");
+            }
+
+            // MID LOOP — Abigail blackmail known
+            if (coe.Has("Knows_Abigail_Blackmail") && !coe.AllCluesFound())
+            {
+                DirectionUI.Instance.SetDirection("Someone is lying. Find proof.");
+            }
+
+            // FINAL LOOP — ALL CLUES FOUND
+            if (coe.AllCluesFound())
+            {
+                DirectionUI.Instance.SetDirection("Confront Caleb at the Overlook.");
+            }
         }
 
         private void OnTriggerEnter(Collider other)
@@ -26,19 +52,21 @@ namespace CS4700
 
         private void StartDialogue()
         {
-            if (coe.Has("HasLedger") && coe.Has("HasLocket") &&
-                coe.Has("Knows_Abigail_Blackmail") && coe.Has("Knows_Caleb_Targeted"))
+            // FINAL LOOP — all key knowledge
+            if (coe.AllCluesFound())
             {
                 FinalLoop_Start();
                 return;
             }
 
+            // MID LOOP — knows Abigail is being blackmailed
             if (coe.Has("Knows_Abigail_Blackmail"))
             {
                 MidLoop_Start();
                 return;
             }
 
+            // LOOP 1 — no knowledge
             Loop1_Start();
         }
 
@@ -279,6 +307,7 @@ namespace CS4700
         private void Ending()
         {
             DialogueManager.Instance.OnDialogueClosed -= Ending;
+            DirectionUI.Instance.SetDirection("");
             SceneManager.LoadScene("CreditsScene");
         }
 
@@ -304,7 +333,14 @@ namespace CS4700
         private void ResetLoop()
         {
             DialogueManager.Instance.OnDialogueClosed -= ResetLoop;
+
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+            // AFTER DEATH — KEEP THIS UNTIL CLUES CHANGE IT
+            if (!coe.AllCluesFound() && !coe.Has("Knows_Abigail_Blackmail"))
+            {
+                DirectionUI.Instance.SetDirection("Uncover the mystery. Ask around town.");
+            }
         }
 
         // ============================

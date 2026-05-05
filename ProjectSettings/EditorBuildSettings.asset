@@ -14,16 +14,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainScene.unity
     guid: 2ff5917eb520cd54d8342287f4ec85c0
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/InsideHouse.unity
     guid: f585d456a5fd944e796a7cc2801b5591
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/InsideHouseBL.unity
     guid: c41c567d3bf0948a9a2844426ac6512b
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/InsideHouseR.unity
     guid: cbc2ac1c2046e485ca7986e1700c090c
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/InsideHouseTR.unity
     guid: 95762fa7d71394e03aedf60b02141260
   - enabled: 1

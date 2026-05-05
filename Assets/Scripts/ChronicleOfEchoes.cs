@@ -24,6 +24,9 @@ namespace CS4700
 
         private HashSet<string> knowledgeFlags = new HashSet<string>();
 
+        // ============================
+        // FIXED SINGLETON
+        // ============================
         private void Awake()
         {
             if (Instance == null)
@@ -31,16 +34,16 @@ namespace CS4700
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
             }
-            else
+            else if (Instance != this)
             {
                 Destroy(gameObject);
+                return;
             }
         }
 
         // ============================
-        // PUBLIC API
+        // FLAG UNLOCKING
         // ============================
-
         public void Unlock(string flag)
         {
             if (!knowledgeFlags.Contains(flag))
@@ -65,6 +68,9 @@ namespace CS4700
             return knowledgeFlags.Contains(flag);
         }
 
+        // ============================
+        // LOOP RESET (knowledge persists)
+        // ============================
         public void ResetLoop()
         {
             // Knowledge persists across loops
@@ -79,6 +85,17 @@ namespace CS4700
             HasLocket = false;
             KnowsCalebTargeted = false;
             KnowsAbigailBlackmail = false;
+        }
+
+        // ============================
+        // CHECK IF ALL CLUES ARE FOUND
+        // ============================
+        public bool AllCluesFound()
+        {
+            return Has("HasLedger") &&
+                   Has("HasLocket") &&
+                   Has("Knows_Caleb_Targeted") &&
+                   Has("Knows_Abigail_Blackmail");
         }
     }
 }
